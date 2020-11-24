@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'AgregarProducto/Producto_Page.dart';
+
 class ListarProductos extends StatefulWidget {
   ListarProductos({Key key}) : super(key: key);
 
@@ -29,6 +31,17 @@ class _ListarProductosState extends State<ListarProductos> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Lista de Productos"),
+        actions: [
+          RaisedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext ctx) => Producto()));
+            },
+            child: Text("Agregar"),
+            color: Colors.blue,
+            textColor: Colors.white,
+          )
+        ],
       ),
       body: Container(
         child: FutureBuilder(
