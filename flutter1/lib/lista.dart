@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter1/EditarProducto/Editar_Page.dart';
+import 'package:flutter1/EliminarProducto/EliminarProducto.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,6 +17,9 @@ class ListarProductos extends StatefulWidget {
 
 class _ListarProductosState extends State<ListarProductos> {
   List list;
+
+  //Instancia de la funsión Eliminiar
+  final productoDelete = new ProductoDelete();
   Future getProductos() async {
     var url =
         'http://192.168.0.110/PROYECTO_MANTENIMIENTO_FLUTTER/CONTROLADOR/ProductoControlador.php?op=2';
@@ -56,13 +61,33 @@ class _ListarProductosState extends State<ListarProductos> {
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
                           list = snapshot.data;
+                          String id = list[index]['ID'];
+
                           return Column(
                             children: <Widget>[
                               SizedBox(
                                 width: 370.0,
                                 child: ListTile(
-                                  onTap: () {},
-                                  title: Text(list[index]['NOMBPROD']),
+                                  trailing: GestureDetector(
+                                    child: IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () {
+                                          setState(() {
+                                            productoDelete.eliminarProducto(id);
+                                          });
+                                        }),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                EditarProducto(
+                                                  list: list,
+                                                  index: index,
+                                                )));
+                                  },
+                                  title: Text(list[index]['NOMPROD']),
                                   subtitle: Text(list[index]['PRECIO']),
                                 ),
                               )
